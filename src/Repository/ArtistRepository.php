@@ -21,6 +21,26 @@ class ArtistRepository extends ServiceEntityRepository
         parent::__construct($registry, Artist::class);
     }
 
+    public function save(Artist $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Artist $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+
+
 //    /**
 //     * @return Artist[] Returns an array of Artist objects
 //     */
@@ -45,4 +65,38 @@ class ArtistRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+//QueryBuilder query
+//    public function getSomeArtists($name)
+//    {
+////        $name = "Neil";
+//
+//        $qb = $this->createQueryBuilder('a');
+//        $qb
+//            ->andWhere('a.name like :name') //le `placeholder comme en PDO!
+//            ->setParameter('name', '%'.$name.'%')
+//            ->orderBy('a.id', 'ASC')
+//            ->setMaxResults(10);
+//
+//        $artists = $qb->getQuery()->getResult();
+//        return $artists;
+//    }
+
+    //DQL query
+    public function getSomeArtists($name)
+    {
+//        $name = "Neil";
+        $entityManager = $this->getEntityManager(); //on instancie l'entity manager
+
+        $query = $entityManager->createQuery( //on crée la requête
+            'SELECT a
+        FROM App\Entity\Artist a
+        WHERE a.name  like :name'
+        )->setParameter('name', '%'.$name.'%');
+
+        // retourne un tableau d'objets de type Artist
+        return $query->getResult();
+
+    }
+
 }
