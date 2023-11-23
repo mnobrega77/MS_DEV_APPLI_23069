@@ -6,12 +6,15 @@ use App\Repository\DiscRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: DiscRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['label' => 'partial'])]
 class Disc
 {
     #[ORM\Id]
@@ -20,7 +23,7 @@ class Disc
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read'])]
+    #[Groups(['read', 'write'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -28,7 +31,7 @@ class Disc
     private ?string $picture = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['read'])]
+    #[Groups(['read', 'write'])]
     private ?string $label = null;
 
     #[ORM\ManyToOne(inversedBy: 'discs')]

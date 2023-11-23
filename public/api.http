@@ -1,0 +1,5 @@
+https://127.0.0.1:8000/api/discs
+
+########################################################
+
+GET http://api.themoviedb.org/3/search/movie?api_key=f33cd318f5135dba306176c13104506a&query=avenger&page=3
