@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ArtistRepository::class)]
 #[ApiResource(operations: [
     new Get(),
-   
 ])]
 class Artist // Le nom de la classe sera utilisé pour nommer la ressource exposée sur l'API
 {
